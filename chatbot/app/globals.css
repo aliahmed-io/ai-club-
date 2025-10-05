@@ -1,0 +1,44 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #0a0f1e;
+  --panel: rgba(18, 26, 48, 0.7);
+  --accent: #6ef1ff;
+  --accent-2: #a78bfa;
+  --accent-3: #00ffa6;
+  --text: #ffffff;
+  --sub: #b8c8e8;
+}
+
+/* Helpful utility for subtle glow borders */
+.glow-border {
+  box-shadow: 0 0 0 1px rgba(110, 241, 255, 0.12) inset,
+    0 10px 30px rgba(0, 0, 0, 0.35);
+}
+
+@keyframes drift { from { transform: translate3d(0,0,0) } to { transform: translate3d(-50%,-50%,0) } }
+@keyframes fadeIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Premium space-ticket theme helpers */
+.bg-space {
+  background: #0a0f1e;
+  background: radial-gradient(ellipse 1400px 900px at 50% 20%, rgba(167,139,250,0.12) 0%, rgba(110,241,255,0.08) 30%, rgba(10,15,30,0.4) 50%, #0a0f1e 70%);
+  min-height: 100vh;
+}
+
+.ticket-card {
+  position: relative;
+  border-radius: 28px;
+  border: 1px solid rgba(255,255,255,0.12);
+  background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(255,255,255,0.04));
+  -webkit-backdrop-filter: blur(16px);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 20px 50px rgba(0,0,0,0.3), 0 0 0 1px rgba(255,255,255,0.05) inset;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.ticket-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 25px 60px rgba(0,0,0,0.4), 0 0 0 1px rgba(255,255,255,0.08) inset;
+}
+
