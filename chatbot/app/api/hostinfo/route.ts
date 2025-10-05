@@ -4,11 +4,11 @@ import { NextResponse } from "next/server";
 function getLANAddress() {
   const nets = os.networkInterfaces();
   for (const name of Object.keys(nets)) {
-    for (const net of nets[name] || []) {
-      if (net && typeof net === "object" && "family" in net) {
-        if ((net as any).family === "IPv4" && !(net as any).internal) {
-          return (net as any).address as string;
-        }
+    const netInterfaces = nets[name];
+    if (!netInterfaces) continue;
+    for (const net of netInterfaces) {
+      if (net.family === "IPv4" && !net.internal) {
+        return net.address;
       }
     }
   }

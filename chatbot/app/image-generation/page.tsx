@@ -27,25 +27,8 @@ export default function ImagePage() {
   const [status, setStatus] = useState("");
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
-  const [pageShareUrl, setPageShareUrl] = useState<string>("");
   const abortRef = useRef<AbortController | null>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
-
-  useEffect(() => {
-    setPageShareUrl(window.location.href);
-    const resolve = async () => {
-      try {
-        const res = await fetch("/api/hostinfo", { cache: "no-store" });
-        if (res.ok) {
-          const info = await res.json();
-          if (info?.lanUrl) setPageShareUrl(info.lanUrl);
-        }
-      } catch {}
-    };
-    if (location.hostname === "localhost" || location.hostname === "127.0.0.1") {
-      resolve();
-    }
-  }, []);
 
   const setLoadingState = (v: boolean) => {
     setLoading(v);
@@ -84,7 +67,7 @@ export default function ImagePage() {
       setTimeout(() => {
         imgRef.current?.scrollIntoView({ behavior: "smooth", block: "center" });
       }, 50);
-    } catch (e) {
+    } catch {
       setStatus("Took too long or failed. Try Retry or tweak the prompt.");
     } finally {
       clearTimeout(timeout);
@@ -181,7 +164,10 @@ export default function ImagePage() {
 
               <div className="relative rounded-xl border border-gray-300 bg-gray-100 min-h-[320px] grid place-items-center overflow-hidden">
                 {!imageUrl && <div className="text-gray-500">Your image will appear here.</div>}
-                {imageUrl && <img ref={imgRef} src={imageUrl} alt="AI generated" className="max-w-full h-auto" />}
+                {imageUrl && (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img ref={imgRef} src={imageUrl} alt="AI generated" className="max-w-full h-auto" />
+                )}
               </div>
 
               <div className="flex flex-wrap items-center gap-2">
