@@ -7,7 +7,7 @@ const Chatbot = () => {
     const [messages, setMessages] = useState([
         { 
             role: 'assistant', 
-            content: '**Welcome to the AI Club booth!** 🚀\n\nI\'m your AI Club Fair Guide. Ask me about joining, upcoming events, today\'s demos (like the Image Generator), or how we learn by building real projects.\n\n- **Why join?** Community, workshops, mentorship, and portfolio-ready projects.\n- **Get involved:** Ask for meeting times, sign-up link, or ways to contribute.\n\nWhat can I tell you about our club? 😊',
+            content: '**Welcome to the AI Club booth!** 🤖\n\nI\'m **Chip**, your AI Club Assistant! I\'m here to help you discover amazing things. Ask me about joining, upcoming events, today\'s demos (like the Image Generator), or how we learn by building real projects.\n\n- **Why join?** Community, workshops, mentorship, and portfolio-ready projects.\n- **Get involved:** Ask for meeting times, sign-up link, or ways to contribute.\n\nWhat can I tell you about our club? 🌟',
             timestamp: new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         }
     ]);
@@ -25,6 +25,11 @@ const Chatbot = () => {
         "How does AI image generation work?",
         "What skills will I learn in the club?",
         "Can beginners join the AI Club?",
+    ];
+
+    const MOBILE_SUGGESTIONS = [
+        "Join Club",
+        "Meeting Times",
     ];
 
     const scrollToBottom = () => {
@@ -195,18 +200,19 @@ const Chatbot = () => {
 	return (
 		<div className="w-full max-w-2xl mx-auto flex flex-col h-[85vh] max-h-[800px] rounded-3xl overflow-hidden border border-gray-200 bg-white/95 backdrop-blur text-gray-900">
 			{/* Header - match image page panel title */}
-            <div className="px-5 pt-5 pb-3 border-b border-gray-200">
-				<h2 className="text-lg font-semibold flex items-center gap-2 text-gray-900">
+            <div className="px-3 sm:px-5 pt-4 sm:pt-5 pb-3 border-b border-gray-200">
+				<h2 className="text-base sm:text-lg font-semibold flex items-center gap-2 text-gray-900">
 					<span className="inline-block w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px]" />
-					AI Assistant
+					Chip - AI Club Assistant
 				</h2>
-				<p className="text-gray-600 text-sm mt-1">Ask anything. Clean, readable answers.</p>
-                <div className="mt-3 flex flex-wrap gap-2">
+				<p className="text-gray-600 text-xs sm:text-sm mt-1">Ask anything. Clean, readable answers.</p>
+                {/* Desktop suggestions */}
+                <div className="mt-3 hidden sm:flex flex-wrap gap-2">
                     {CHAT_SUGGESTIONS.map((s, i) => (
                         <button
                             key={i}
                             type="button"
-                            className="px-3 py-1.5 rounded-full border border-gray-300 bg-gray-50 text-gray-700 hover:bg-gray-100 transition"
+                            className="px-3 py-1.5 rounded-full border border-gray-300 bg-gray-50 text-gray-700 hover:bg-gray-100 transition text-sm"
                             title="Use this prompt"
                             onClick={() => { setInput(s); setTimeout(() => inputRef.current?.focus(), 0); }}
                         >
@@ -217,7 +223,7 @@ const Chatbot = () => {
             </div>
 			
 			{/* Chat Area */}
-			<div className="flex-1 p-6 overflow-y-auto flex flex-col gap-6 bg-gray-50">
+			<div className="flex-1 p-3 sm:p-6 overflow-y-auto flex flex-col gap-4 sm:gap-6 bg-gray-50">
                 {messages.map((msg, index) => (
                     <div
                         key={index}
@@ -282,37 +288,54 @@ const Chatbot = () => {
             </div>
 
 			{/* Input Area */}
-			<div className="p-4 border-t border-gray-200 bg-white">
-				<div className="flex items-end gap-3 rounded-2xl p-3 border border-gray-300 bg-gray-50 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
-					<div className="flex-1">
-						<input
-                            type="text"
-                            ref={inputRef}
-                            value={input}
-                            onChange={(e) => setInput(e.target.value)}
-                            onKeyPress={(e) => e.key === 'Enter' && handleSend()}
-                            placeholder="Type your message here..."
-                            className="w-full bg-transparent border-0 outline-none text-gray-900 placeholder-gray-500 text-sm py-2 px-2 resize-none"
-                        />
+			<div className="p-3 sm:p-4 border-t border-gray-200 bg-white">
+                <div className="space-y-2">
+                    <div className="flex items-end gap-2 sm:gap-3 rounded-2xl p-2.5 sm:p-3 border border-gray-300 bg-gray-50 focus-within:border-blue-400 focus-within:ring-2 focus-within:ring-blue-100 transition-all">
+                        <div className="flex-1">
+                            <input
+                                type="text"
+                                ref={inputRef}
+                                value={input}
+                                onChange={(e) => setInput(e.target.value)}
+                                onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+                                placeholder="Type your message here..."
+                                className="w-full bg-transparent border-0 outline-none text-gray-900 placeholder-gray-500 text-sm py-2 px-2 resize-none"
+                            />
+                        </div>
+                        <button
+                            onClick={handleSend}
+                            disabled={isLoading || !input.trim()}
+                            className="rounded-full p-2.5 sm:p-3 text-white bg-gradient-to-br from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-0 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
+                        >
+                            {isLoading ? (
+                                <svg className="w-4 h-4 sm:w-5 sm:h-5 animate-spin" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" opacity="0.25"></circle>
+                                    <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" opacity="0.75"></path>
+                                </svg>
+                            ) : (
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-4 h-4 sm:w-5 sm:h-5">
+                                    <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
+                                </svg>
+                            )}
+                        </button>
                     </div>
-                    <button
-                        onClick={handleSend}
-                        disabled={isLoading || !input.trim()}
-						className="rounded-full p-3 text-white bg-gradient-to-br from-indigo-500 to-purple-500 hover:from-indigo-600 hover:to-purple-600 focus:outline-none focus:ring-2 focus:ring-indigo-400 focus:ring-offset-0 disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200 transform hover:scale-105 shadow-lg hover:shadow-xl"
-                    >
-                        {isLoading ? (
-                            <svg className="w-5 h-5 animate-spin" viewBox="0 0 24 24">
-                                <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" fill="none" opacity="0.25"></circle>
-                                <path fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" opacity="0.75"></path>
-                            </svg>
-                        ) : (
-                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
-                                <path d="M3.478 2.404a.75.75 0 0 0-.926.941l2.432 7.905H13.5a.75.75 0 0 1 0 1.5H4.984l-2.432 7.905a.75.75 0 0 0 .926.94 60.519 60.519 0 0 0 18.445-8.986.75.75 0 0 0 0-1.218A60.517 60.517 0 0 0 3.478 2.404Z" />
-                            </svg>
-                        )}
-                    </button>
+                    
+                    {/* Mobile suggestions - below input */}
+                    <div className="flex gap-2 sm:hidden">
+                        {MOBILE_SUGGESTIONS.map((s, i) => (
+                            <button
+                                key={i}
+                                type="button"
+                                className="px-3 py-1.5 rounded-full border border-gray-300 bg-gray-50 text-gray-700 hover:bg-gray-100 transition text-xs"
+                                title="Use this prompt"
+                                onClick={() => { setInput(s); setTimeout(() => inputRef.current?.focus(), 0); }}
+                            >
+                                {s} 
+                            </button>
+                        ))}
+                    </div>
                 </div>
-				<p className="text-xs text-gray-500 mt-2 text-center">
+				<p className="text-xs text-gray-500 mt-2 text-center hidden sm:block">
                     Press Enter to send • Supports Markdown formatting
                 </p>
             </div>

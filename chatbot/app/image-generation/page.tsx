@@ -9,6 +9,11 @@ const PRESET_CHIPS = [
   "photorealistic moon base with plants, soft lighting",
 ];
 
+const MOBILE_PRESET_CHIPS = [
+  "Space Cat",
+  "Neon City",
+];
+
 function encodePrompt(p: string) {
   return encodeURIComponent(p).replace(/%20/g, "+");
 }
@@ -94,67 +99,89 @@ export default function ImagePage() {
   };
 
   return (
-    <main className="mx-auto max-w-5xl p-4 sm:p-6 md:p-10">
-      <header className="mb-6 animate-[fadeIn_0.5s_ease-out]">
+    <main className="mx-auto max-w-5xl p-3 sm:p-6 md:p-10">
+      <header className="mb-4 sm:mb-6 animate-[fadeIn_0.5s_ease-out]">
         {/* title + subtitle switched to black as requested */}
-        <h1 className="text-2xl sm:text-3xl font-bold tracking-tight text-black">AI Space Control Panel</h1>
-        <p className="text-black/85 mt-1">Click. Generate. Share. Perfect for club fairs and live demos.</p>
+        <h1 className="text-xl sm:text-2xl md:text-3xl font-bold tracking-tight text-black">AI Space Control Panel</h1>
+        <p className="text-black/85 mt-1 text-sm sm:text-base">Click. Generate. Share. Perfect for club fairs and live demos.</p>
       </header>
 
-      <section className="ticket-card p-5 sm:p-7 animate-[fadeIn_0.6s_ease-out] bg-white/95">
-        <div className="space-y-6">
+      <section className="ticket-card p-3 sm:p-5 md:p-7 animate-[fadeIn_0.6s_ease-out] bg-white/95">
+        <div className="space-y-4 sm:space-y-6">
           {/* Generator */}
-          <section className="rounded-2xl border border-gray-200 bg-white p-5 shadow-lg transition-all hover:shadow-xl">
-            <h2 className="text-lg font-semibold flex items-center gap-2 mb-3 text-gray-900">
+          <section className="rounded-2xl border border-gray-200 bg-white p-3 sm:p-5 shadow-lg transition-all hover:shadow-xl">
+            <h2 className="text-base sm:text-lg font-semibold flex items-center gap-2 mb-3 text-gray-900">
               <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 shadow-[0_0_10px] shadow-emerald-400" />
               AI Image Generator Demo
             </h2>
             <div className="space-y-3">
-              <div className="flex flex-wrap gap-2">
+              {/* Input field - full width on mobile */}
+              <div className="space-y-2">
                 <input
                   value={prompt}
                   onChange={(e) => setPrompt(e.target.value)}
                   placeholder="Describe your space art..."
-                  className="flex-1 min-w-[220px] rounded-xl border border-gray-300 bg-gray-50 px-3 py-2 outline-none placeholder-gray-500 text-gray-900"
+                  className="w-full rounded-xl border border-gray-300 bg-gray-50 px-3 py-2.5 outline-none placeholder-gray-500 text-gray-900 text-sm sm:text-base"
                 />
+                
+                {/* Mobile preset chips - below input, 2 words max */}
+                <div className="flex gap-2 sm:hidden">
+                  {MOBILE_PRESET_CHIPS.map((p) => (
+                    <button
+                      key={p}
+                      onClick={() => setPrompt(p)}
+                      className="px-3 py-1.5 rounded-full border border-gray-300 bg-gray-50 text-gray-700 hover:bg-gray-100 transition text-xs"
+                      title="Use this prompt"
+                    >
+                      {p}
+                    </button>
+                  ))}
+                </div>
+              </div>
 
+              {/* Style selector and Generate button */}
+              <div className="flex flex-col sm:flex-row gap-2">
                 <select
                   aria-label="Choose image style"
                   name="style"
                   value={style}
                   onChange={(e) => setStyle(e.target.value)}
-                  className="rounded-xl border border-gray-300 bg-white px-4 py-2.5 outline-none text-gray-900 font-medium shadow-sm hover:border-gray-400 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%3E%3Cpath%20fill%3D%22%236b7280%22%20d%3D%22M10.293%203.293L6%207.586%201.707%203.293A1%201%200%2000.293%204.707l5%205a1%201%200%20001.414%200l5-5a1%201%200%2010-1.414-1.414z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px_16px] bg-[position:right_12px_center] bg-no-repeat pr-10 [&>option]:bg-white [&>option]:text-gray-900 [&>option]:py-3 [&>option]:px-4 [&>option]:rounded-lg [&>option:hover]:bg-indigo-50 [&>option:checked]:bg-indigo-100 [&>option:checked]:font-semibold"
+                  className="w-full sm:flex-1 rounded-xl border border-gray-300 bg-white px-4 py-2.5 outline-none text-gray-900 font-medium shadow-sm hover:border-gray-400 focus:border-indigo-400 focus:ring-2 focus:ring-indigo-100 transition cursor-pointer appearance-none bg-[url('data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2212%22%20height%3D%2212%22%20viewBox%3D%220%200%2012%2012%22%3E%3Cpath%20fill%3D%22%236b7280%22%20d%3D%22M10.293%203.293L6%207.586%201.707%203.293A1%201%200%2000.293%204.707l5%205a1%201%200%20001.414%200l5-5a1%201%200%2010-1.414-1.414z%22%2F%3E%3C%2Fsvg%3E')] bg-[length:16px_16px] bg-[position:right_12px_center] bg-no-repeat pr-10 text-sm sm:text-base"
                 >
-                  <option value="" className="py-3 px-4 text-gray-500 bg-white rounded-lg">Select a style...</option>
-                  <option value="cinematic, dramatic lighting" className="py-3 px-4 bg-white hover:bg-indigo-50 rounded-lg">Cinematic & Dramatic</option>
-                  <option value="digital art, trending on artstation" className="py-3 px-4 bg-white hover:bg-indigo-50 rounded-lg">Digital Art</option>
-                  <option value="low-poly 3D, isometric" className="py-3 px-4 bg-white hover:bg-indigo-50 rounded-lg">Low-Poly 3D</option>
-                  <option value="retro anime, cel shading" className="py-3 px-4 bg-white hover:bg-indigo-50 rounded-lg">Retro Anime</option>
-                  <option value="pixel art, 32-bit" className="py-3 px-4 bg-white hover:bg-indigo-50 rounded-lg">Pixel Art</option>
-                  <option value="photorealistic, ultra-detailed" className="py-3 px-4 bg-white hover:bg-indigo-50 rounded-lg">Photorealistic</option>
+                  <option value="">Select a style...</option>
+                  <option value="cinematic, dramatic lighting">Cinematic & Dramatic</option>
+                  <option value="digital art, trending on artstation">Digital Art</option>
+                  <option value="low-poly 3D, isometric">Low-Poly 3D</option>
+                  <option value="retro anime, cel shading">Retro Anime</option>
+                  <option value="pixel art, 32-bit">Pixel Art</option>
+                  <option value="photorealistic, ultra-detailed">Photorealistic</option>
                 </select>
 
                 {/* PRIMARY: purple -> indigo gradient like the asset */}
                 <button
                   onClick={generateImage}
                   disabled={loading}
-                  className="rounded-xl border border-transparent bg-gradient-to-br from-indigo-500 to-purple-500 text-white px-5 py-2.5 font-bold hover:from-indigo-600 hover:to-purple-600 transition shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed"
+                  className="w-full sm:w-auto rounded-xl border border-transparent bg-gradient-to-br from-indigo-500 to-purple-500 text-white px-5 py-2.5 font-bold hover:from-indigo-600 hover:to-purple-600 transition shadow-lg hover:shadow-xl disabled:opacity-50 disabled:cursor-not-allowed text-sm sm:text-base"
                 >
                   Generate Image
                 </button>
-
-                <span className={`inline-flex items-center gap-2 text-sm ${loading ? "text-gray-600" : "hidden"}`}>
-                  <span className="w-4 h-4 border-2 border-gray-300 border-t-indigo-500 rounded-full animate-spin" />
-                  Generating (≤10s)…
-                </span>
               </div>
 
-              <div className="flex flex-wrap gap-2">
+              {/* Loading indicator */}
+              {loading && (
+                <div className="flex items-center justify-center gap-2 text-sm text-gray-600 py-2">
+                  <span className="w-4 h-4 border-2 border-gray-300 border-t-indigo-500 rounded-full animate-spin" />
+                  Generating (≤10s)…
+                </div>
+              )}
+
+              {/* Desktop preset chips - only shown on larger screens */}
+              <div className="hidden sm:flex flex-wrap gap-2">
                 {PRESET_CHIPS.map((p) => (
                   <button
                     key={p}
                     onClick={() => setPrompt(p)}
-                    className="px-3 py-1.5 rounded-full border border-gray-300 bg-gray-50 text-gray-700 hover:bg-gray-100 transition"
+                    className="px-3 py-1.5 rounded-full border border-gray-300 bg-gray-50 text-gray-700 hover:bg-gray-100 transition text-sm"
                     title="Use this prompt"
                   >
                     {p}
@@ -162,31 +189,37 @@ export default function ImagePage() {
                 ))}
               </div>
 
-              <div className="relative rounded-xl border border-gray-300 bg-gray-100 min-h-[320px] grid place-items-center overflow-hidden">
-                {!imageUrl && <div className="text-gray-500">Your image will appear here.</div>}
+              {/* Image preview */}
+              <div className="relative rounded-xl border border-gray-300 bg-gray-100 min-h-[240px] sm:min-h-[320px] grid place-items-center overflow-hidden">
+                {!imageUrl && <div className="text-gray-500 text-sm sm:text-base px-4 text-center">Your image will appear here.</div>}
                 {imageUrl && (
                   // eslint-disable-next-line @next/next/no-img-element
                   <img ref={imgRef} src={imageUrl} alt="AI generated" className="max-w-full h-auto" />
                 )}
               </div>
 
-              <div className="flex flex-wrap items-center gap-2">
-                {/* SECONDARY: subtle purple outline / white background */}
-                <button
-                  onClick={downloadCurrent}
-                  className="rounded-xl border border-purple-200 bg-white text-purple-700 px-3 py-2 hover:bg-purple-50 transition"
-                >
-                  Download
-                </button>
+              {/* Action buttons */}
+              <div className="flex flex-col sm:flex-row sm:items-center gap-2">
+                <div className="flex gap-2">
+                  {/* SECONDARY: subtle purple outline / white background */}
+                  <button
+                    onClick={downloadCurrent}
+                    className="flex-1 sm:flex-none rounded-xl border border-purple-200 bg-white text-black px-4 py-2 hover:bg-purple-50 transition text-sm sm:text-base font-medium"
+                  >
+                    Download
+                  </button>
 
-                <button
-                  onClick={retry}
-                  className="rounded-xl border border-purple-200 bg-white text-purple-700 px-3 py-2 hover:bg-purple-50 transition"
-                >
-                  Retry
-                </button>
+                  <button
+                    onClick={retry}
+                    className="flex-1 sm:flex-none rounded-xl border border-purple-200 bg-white text-black px-4 py-2 hover:bg-purple-50 transition text-sm sm:text-base font-medium"
+                  >
+                    Retry
+                  </button>
+                </div>
 
-                <span className="text-gray-600 text-sm">{status}</span>
+                {status && (
+                  <span className="text-gray-600 text-xs sm:text-sm text-center sm:text-left">{status}</span>
+                )}
               </div>
             </div>
           </section>
