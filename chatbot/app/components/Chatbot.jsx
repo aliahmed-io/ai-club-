@@ -29,7 +29,7 @@ const Chatbot = () => {
 
     const MOBILE_SUGGESTIONS = [
         "Join Club",
-        "Meeting Times",
+        "AI Projects",
     ];
 
     const scrollToBottom = () => {
@@ -198,7 +198,7 @@ const Chatbot = () => {
     };
 
 	return (
-		<div className="w-full max-w-2xl mx-auto flex flex-col h-[85vh] max-h-[800px] rounded-3xl overflow-hidden border border-gray-200 bg-white/95 backdrop-blur text-gray-900">
+		<div className="w-full max-w-full sm:max-w-2xl mx-auto flex flex-col h-[85vh] max-h-[800px] rounded-3xl overflow-hidden border border-gray-200 bg-white/95 backdrop-blur text-gray-900">
 			{/* Header - match image page panel title */}
             <div className="px-3 sm:px-5 pt-4 sm:pt-5 pb-3 border-b border-gray-200">
 				<h2 className="text-base sm:text-lg font-semibold flex items-center gap-2 text-gray-900">
